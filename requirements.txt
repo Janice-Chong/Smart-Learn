@@ -1,5 +1,6 @@
 streamlit
 st-pages
+scikit-learn
 pillow
 pandas
 joblib
