@@ -6,3 +6,4 @@ st-pages==0.4.5
 Page==0.4.5
 add_page_title==0.4.5
 show_pages==0.4.5
+git+https://github.com/blackary/st_pages.git
