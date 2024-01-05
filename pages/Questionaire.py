@@ -92,15 +92,35 @@ def questionnaire():
     # Multiple selection question
     response = st.multiselect("Preferred learning mode", ["Face to Face", "Synchronous Online Learning (Real Time)",
                                                           "Asynchronous Online Learning (On your own time)"])
-#     st.text('Select all options that apply. You can select more than 1 option')
-
     # Check if there's a response
     if not response:
-        st.error("Please select at least one option for Preferred Learning Mode.")
+        st.error("Please select at least one option for Preferred Learning Mode")
     else:
         # Join the selected options if there's a response
         response_text = ', '.join(response)
         responses['Preferred learning mode'] = response_text
+        
+    # Multiple selection question
+    response = st.multiselect("Preferred Communication Platform", ["Whatsapp", "Email", "University eLearning Chat Room", "Call", 
+                                                                   "Telegram", "Others"])
+    # Check if there's a response
+    if not response:
+        st.error("Please select at least one option for Preferred Communication Platform")
+    else:
+        # Join the selected options if there's a response
+        response_text = ', '.join(response)
+        responses['Preferred Communication Platform'] = response_text
+
+#     # Check if there's a response
+#     if not response:
+#         st.error("Please select at least one option for Preferred Learning Mode and Preferred Communication Platform")
+#     else:
+#         # Join the selected options if there's a response
+#         response_text = ', '.join(response)
+#         responses['Preferred learning mode'] = response_text
+        
+#         response_text = ', '.join(response)
+#         responses['Preferred Communication Platform'] = response_text
         
         st.subheader('Part 2: VAK Learning Style Test', anchor=False)
         
@@ -340,9 +360,11 @@ def display_domVAK(df_responses):
 def encode_res(df_responses, demographics_questions, vak_questions):
     # Splitting column by ', ' with multiple options
     df_responses['Preferred learning mode'] = df_responses['Preferred learning mode'].str.split(', ')
+    df_responses['Preferred Communication Platform'] = df_responses['Preferred Communication Platform'].str.split(', ')
 
     # Exploding the columns to separate rows for each value
     df_responses = df_responses.explode('Preferred learning mode').reset_index(drop=True)
+    df_responses = df_responses.explode('Preferred Communication Platform').reset_index(drop=True)
     
     # Define your custom mapping
     custom_mapping = {
@@ -360,8 +382,8 @@ def encode_res(df_responses, demographics_questions, vak_questions):
     for question, option in demographics_questions.items():
         df_responses[question] = df_responses[question].map(custom_mapping)
         
-    # Get the vak questions columns (column E to column AH)
-    qcolumns_df = df_responses.iloc[:, 4:34]
+    # Get the vak questions columns (column F to column AI)
+    qcolumns_df = df_responses.iloc[:, 5:35]
     
     # Encode categorical variables (one-hot encoding)
     df_responses = pd.get_dummies(df_responses, columns=qcolumns_df.columns, prefix=qcolumns_df.columns)
@@ -376,7 +398,7 @@ def encode_res(df_responses, demographics_questions, vak_questions):
     # Perform ordinal encoding using the defined mapping
     df_responses['Dominant_VAK'] = df_responses['Dominant_VAK'].map(custom_mapping)
     
-    prefered_columns = ['Preferred learning mode']
+    prefered_columns = ['Preferred learning mode', 'Preferred Communication Platform']
     # Encode categorical variables (one-hot encoding)
     df_responses = pd.get_dummies(df_responses, columns=prefered_columns, prefix=prefered_columns)
     
@@ -407,7 +429,7 @@ def final_df(df_responses):
 
 # Predictions
 def model_predict(df_responses):
-    svm_model = joblib.load("Model/svm_model_withQues.joblib")
+    svm_model = joblib.load("Model/svm_new_model.joblib")
     predictions = pd.DataFrame({col: classifier.predict(df_responses) for col, classifier in svm_model.items()})
     
     predictions.to_csv("predictions.csv", index=False)
