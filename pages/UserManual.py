@@ -79,7 +79,7 @@ st.markdown(sys_will, unsafe_allow_html=True)
 st.subheader('Exploratory Data Analysis (EDA) Tab', anchor=False)
 eda_tab = f"""
 <div style="text-align: justify;">
-    <p>Describe the data collected in regards to the project, to show the general {col_17px_text('distribution of the respondents')} (e.g. gender, level of study, dominant learning style) as well as the {col_17px_text('general preferences')} on the learning mode and learning objects.</p>
+    <p>Describe the data collected in regards to the project, to show the general {col_17px_text('distribution of the respondents')} (e.g. gender, level of study, dominant learning style) as well as the {col_17px_text('general preferences')} on the learning mode, communication platform and learning objects.</p>
 </div>
 """
 st.markdown(eda_tab, unsafe_allow_html=True)

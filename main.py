@@ -33,7 +33,7 @@ st.markdown(about_text, unsafe_allow_html=True)
         
 from PIL import Image
 LevelStudy_Gender = Image.open("Pictures/Personalisation.png")
-st.image(LevelStudy_Gender, caption='Figure 1: High Level Overview of Personalisation Considerations', use_column_width="always")
+st.image(LevelStudy_Gender, caption='Figure 1: General Overview of Personalisation Considerations', use_column_width="always")
 
 
 
